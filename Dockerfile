@@ -1,5 +1,4 @@
 FROM python:3.5
-MAINTAINER Tinpee <tinpee.dev@gmail.com>
 
 ADD . /src
 WORKDIR /src
