@@ -31,7 +31,8 @@
             <div class="panel-body">
                 <div class="alignContainer">
                     <div class="alignMiddle frontText">
-                        <h3 class="text-center">{{ card.front }}</h3>
+                        <h3 class="text-center" style="font-size: larger; text-align: left;">
+                            {{ card.front |replace("\n", "<br />")|safe}}</h3>
                     </div>
                 </div>
             </div>
@@ -40,16 +41,14 @@
             <div class="panel-body">
                 <div class="alignContainer">
                     <div class="alignMiddle frontText">
-                        {% if card.type == 1 %}
-                        {% if short_answer %}
-                        <div class="text-center largerText">
-                            {% endif %}
-                            {{ card.back|replace("\n", "<br />")|safe }}
-                            {% if short_answer %}
+                        {% if short_answer == True %}
+                        <div class="text-center largerText"
+                            style="font-size: 1.2em; font-weight: bold; text-align: center;">
+                            {{ textCardBack |replace("\n", "<br />")|safe }}
                         </div>
                         {% endif %}
-                        {% else %}
-                        <pre><code>{{ card.back|escape }}</code></pre>
+                        {% if short_answer == False%}
+                        <pre><code><img src="data:;base64,{{ textCardBack }}" width="100%" height="80%" /></code></pre>
                         {% endif %}
                     </div>
                 </div>

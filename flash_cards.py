@@ -1,14 +1,20 @@
 import os
+from base64 import b64encode
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash
+
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'db', 'cards-jwasham-extreme.db'),
+    DATABASE=os.path.join(app.root_path, 'db', 'Azure-900-Certification.db'),
+    # DATABASE="E:\\Learning\\Flash_Cards_dbProject\\Azure-900-Certification.db",
     SECRET_KEY='development key',
     USERNAME='admin',
     PASSWORD='default'
@@ -204,11 +210,17 @@ def memorize(card_type, card_id):
     if not card:
         flash("You've learned all the " + card_type + " cards.")
         return redirect(url_for('cards'))
-    short_answer = (len(card['back']) < 75)
+    short_answer = (len(card['back']) < 9999)
+    image = b64encode(card['back']).decode("utf-8")
+    textCardBack = ""
+    if short_answer == True:
+        textCardBack = card['back']
+    else:
+        textCardBack = image
     return render_template('memorize.html',
                            card=card,
                            card_type=card_type,
-                           short_answer=short_answer)
+                           short_answer=short_answer, textCardBack=textCardBack)
 
 
 def get_card(type):
@@ -279,4 +291,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='127.0.0.1')
